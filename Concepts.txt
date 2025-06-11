@@ -1,0 +1,2 @@
+There are two optimizing technique to control the function call
+Debouncing and throttling
