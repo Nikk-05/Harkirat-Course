@@ -1,0 +1,1 @@
+{"root":["./src/create-table.ts","./src/get-data.ts","./src/insert-data.ts","./src/update-todo.ts","./src/utils.ts","./src/joins/join-query-1.ts"],"version":"5.8.3"}
