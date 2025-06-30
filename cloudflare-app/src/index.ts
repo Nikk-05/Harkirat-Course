@@ -11,16 +11,35 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
+export interface Env {
+}
+
 export default {
-	async fetch(request, env, ctx): Promise<Response> {
+	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
 		const url = new URL(request.url);
-		switch (url.pathname) {
-			case '/message':
-				return new Response('Hello, World!');
-			case '/random':
-				return new Response(crypto.randomUUID());
-			default:
-				return new Response('Not Found', { status: 404 });
+		const { pathname } = url;
+
+		// GET /
+		if (request.method === "GET" && pathname === "/") {
+			return new Response("Hello World", { status: 200 });
 		}
-	},
-} satisfies ExportedHandler<Env>;
+
+		// GET /user/:id
+		if (request.method === "GET" && pathname.startsWith("/user/")) {
+			const id = pathname.split("/")[2];
+			return new Response(`User ID is ${id}`, { status: 200 });
+		}
+
+		// POST /data
+		if (request.method === "POST" && pathname === "/data") {
+			const body = await request.json();
+			return new Response(JSON.stringify({ message: "Data received" }), {
+				status: 200,
+				headers: { "Content-Type": "application/json" }
+			});
+		}
+		return new Response("Not Found", { status: 404 });
+	}
+};
+
+
